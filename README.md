@@ -155,8 +155,3 @@ make clean
 3. **Async reset strategy**: Each domain has its own async reset. Reset deassertion should be synchronized to the respective clock (not done here — a reset synchronizer would be added in production).
 
 4. **Scoreboard pending_rd buffer**: Cross-domain monitors can deliver transactions to the scoreboard out of order due to simulator event scheduling. The pending_rd queue absorbs reads that arrive before their corresponding write, draining when writes catch up.
-
-## References
-
-- Cummings, "Simulation and Synthesis Techniques for Asynchronous FIFO Design", SNUG 2002
-- Cummings, "Synthesis and Scripting Techniques for Designing Multi-Asynchronous Clock Designs", SNUG 2001
