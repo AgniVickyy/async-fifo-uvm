@@ -145,13 +145,3 @@ make clean
 |-----------|---------|-------------|
 | `DATA_WIDTH` | 8 | Data bus width in bits |
 | `ADDR_WIDTH` | 3 | Address width; FIFO depth = 2^ADDR_WIDTH |
-
-## Design Tradeoffs Worth Discussing
-
-1. **Conservative flags vs. exact count**: This design trades throughput for safety. The 2-FF sync delay means the write side sees a stale read pointer, so `wfull` asserts 2 read-cycles early. An almost-full/almost-empty threshold counter could mitigate this at the cost of more logic.
-
-2. **Registered vs. combinational RAM read**: Registered output adds 1 cycle latency but closes timing at higher frequencies. For shallow FIFOs or low-frequency designs, a combinational read (`assign rdata = mem[raddr]`) saves a cycle.
-
-3. **Async reset strategy**: Each domain has its own async reset. Reset deassertion should be synchronized to the respective clock (not done here — a reset synchronizer would be added in production).
-
-4. **Scoreboard pending_rd buffer**: Cross-domain monitors can deliver transactions to the scoreboard out of order due to simulator event scheduling. The pending_rd queue absorbs reads that arrive before their corresponding write, draining when writes catch up.
