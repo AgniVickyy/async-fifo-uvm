@@ -1,5 +1,5 @@
 // ============================================================================
-// wptr_full.sv — Write pointer and full flag generation (Cummings style)
+// wptr_full.sv — Write pointer and full flag generation 
 // ============================================================================
 module wptr_full #(
   parameter int ADDR_WIDTH = 3
