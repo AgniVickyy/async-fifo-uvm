@@ -1,5 +1,5 @@
 // ============================================================================
-// async_fifo.sv — Top-level Async FIFO (Cummings SNUG 2002 architecture)
+// async_fifo.sv — Top-level Async FIFO 
 //
 // Features:
 //   - Parameterized depth (power-of-2) and width
