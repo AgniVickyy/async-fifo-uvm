@@ -1,12 +1,3 @@
-// ============================================================================
-// async_fifo.sv — Top-level Async FIFO 
-//
-// Features:
-//   - Parameterized depth (power-of-2) and width
-//   - Gray-code pointer CDC with 2-FF synchronizers
-//   - Registered RAM output
-//   - Asynchronous resets per clock domain
-// ============================================================================
 module async_fifo #(
   parameter int DATA_WIDTH = 8,
   parameter int ADDR_WIDTH = 3   // FIFO depth = 2^ADDR_WIDTH
@@ -26,12 +17,12 @@ module async_fifo #(
   output logic                  rempty
 );
 
-  // ---- Internal signals ----
+  // Internal signals 
   logic [ADDR_WIDTH-1:0] waddr, raddr;
   logic [ADDR_WIDTH:0]   wptr_gray, rptr_gray;
   logic [ADDR_WIDTH:0]   wptr_gray_sync, rptr_gray_sync;
 
-  // ---- Dual-port RAM ----
+  // Dual-port RAM 
   dual_port_ram #(
     .DATA_WIDTH (DATA_WIDTH),
     .ADDR_WIDTH (ADDR_WIDTH)
@@ -46,7 +37,7 @@ module async_fifo #(
     .rdata (rdata)
   );
 
-  // ---- Write pointer + full logic ----
+  //Write pointer + full logic
   wptr_full #(
     .ADDR_WIDTH (ADDR_WIDTH)
   ) u_wptr_full (
@@ -59,7 +50,7 @@ module async_fifo #(
     .wfull          (wfull)
   );
 
-  // ---- Read pointer + empty logic ----
+  //Read pointer + empty logic 
   rptr_empty #(
     .ADDR_WIDTH (ADDR_WIDTH)
   ) u_rptr_empty (
@@ -72,7 +63,7 @@ module async_fifo #(
     .rempty         (rempty)
   );
 
-  // ---- Synchronizers: wptr → rclk domain ----
+  //Synchronizers: wptr → rclk domain
   sync_2ff #(
     .WIDTH (ADDR_WIDTH + 1)
   ) u_sync_w2r (
@@ -82,7 +73,7 @@ module async_fifo #(
     .dout  (wptr_gray_sync)
   );
 
-  // ---- Synchronizers: rptr → wclk domain ----
+  // Synchronizers: rptr → wclk domain 
   sync_2ff #(
     .WIDTH (ADDR_WIDTH + 1)
   ) u_sync_r2w (
